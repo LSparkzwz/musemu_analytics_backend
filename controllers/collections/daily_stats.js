@@ -3,36 +3,6 @@ let utils = require('../utils');
 let collection = "daily_stats";
 let query;
 
-/*
-daily_stats is a collection whose documents follow the following structure:
-{
-    day: ...
-	visitors_per_hour_in_general : {
- 		hour_1 : ...,
- 		hour_2 : ...
-	},
- 	rooms : {
- 		room_1 : {
- 		    visitors_per_hour : {
- 				hour_1 : ...,
- 				hour_2 : ...
- 			},
- 		room_2 : ...
-	},
- 	POI : {
-        	POI_1 : {
-        		daily_attraction_power : ...,
-        		daily_holding_power : ...
-        		},
- 	},
- 	total_number_of_groups : ...,
- 	total_number_of_visitors : ...,
- 	average_group_size : ...,
- 	average_group_time_in_museum : ....,
- 	average_visitor_time_in_museum : ....,
-}
- */
-
 module.exports = {
     initializeDailyStats: function(){
         let dailyStats = [{
@@ -332,7 +302,7 @@ module.exports = {
     updateDailyStats: function (stats, day){
         query = { day: day };
         let newValues = { $set: stats };
-        dbAPI.updateDocument(query, newValues, collection);
+        dbAPI.updateElseInsertDocument(query, newValues, collection);
     }
 
 }

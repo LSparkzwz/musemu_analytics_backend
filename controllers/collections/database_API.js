@@ -30,15 +30,37 @@ module.exports = {
         });
     },
 
-    updateDocument: async function(query, newValues, collection){
+    //tries to update item/s, if there's none it inserts instead
+    updateElseInsertDocument: async function(query, newValues, collection){
         await MongoClient.connect(url, { useUnifiedTopology: true },function(err, db) {
             if (err) throw err;
-            var dbo = db.db("museum_analytics");
-            dbo.collection(collection).updateOne(query, newValues, function(err, res) {
-                if (err) throw err;
-                console.log("1 document updated");
-                db.close();
-            });
+            let dbo = db.db("museum_analytics");
+            //if we have a batch of items
+            if(newValues.constructor === Array) {
+                let update = newValues.map(newValue => ({
+                    updateOne: {
+                        filter: { [query] : newValue[query]},
+                        update: newValue,
+                        upsert: true
+                    }
+                }));
+                dbo.collection(collection).bulkWrite(update)
+                    .then((res) => { console.log(res.result.nModified + " documents inserted/updated"); })
+                    .catch(e => {
+                    console.log(e);
+                });
+            }
+            //if not
+            else{
+                dbo.collection(collection).updateMany(query, newValues, { upsert: true },function(err, res) {
+                    if (err) throw err;
+                    console.log(res.result.nModified + " documents inserted/updated");
+                    db.close();
+                });
+
+            }
+
+
         });
     }
 }

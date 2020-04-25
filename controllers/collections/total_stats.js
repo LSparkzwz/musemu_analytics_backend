@@ -300,6 +300,6 @@ module.exports = {
     updateTotalStats: function (stats){
         query = {_id: "total_stats"};
         let newValues = { $set: stats };
-        dbAPI.updateDocument(query, newValues, collection);
+        dbAPI.updateElseInsertDocument(query, newValues, collection);
     }
 };

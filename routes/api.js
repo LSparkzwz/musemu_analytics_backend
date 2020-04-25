@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var totalStats = require('../public/javascripts/collections/total_stats');
-var dailyStats = require('../public/javascripts/collections/daily_stats');
-var visitors = require('../public/javascripts/collections/visitors');
-var visitorGrouping = require('../public/javascripts/collections/visitors_grouping');
-var dbAPI = require('../public/javascripts/collections/database_API');
+var totalStats = require('../controllers/collections/total_stats');
+var dailyStats = require('../controllers/collections/daily_stats');
+var visitors = require('../controllers/collections/visitor');
+var visitorGrouping = require('../controllers/collections/visitors_grouping');
+var dbAPI = require('../controllers/collections/database_API');
 
 router.get('/total_stats', function(req, res, next) {
     res.format({
@@ -70,6 +70,16 @@ router.get('/group/day_of_visit/:day', function(req, res, next) {
             let query = { day : new Date(req.params.day) }
             let group = await visitorGrouping.getGroup(query);
             res.json(group);
+        }
+    })
+});
+
+router.get('/upload/visitor', function(req, res, next) {
+    res.format({
+        'application/json': async function () {
+
+
+            res.json(res);
         }
     })
 });
