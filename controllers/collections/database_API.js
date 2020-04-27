@@ -39,11 +39,12 @@ module.exports = {
             if(newValues.constructor === Array) {
                 let update = newValues.map(newValue => ({
                     updateOne: {
-                        filter: { [query] : newValue[query]},
+                        filter: {[query]: newValue[query]},
                         update: newValue,
                         upsert: true
                     }
                 }));
+
                 dbo.collection(collection).bulkWrite(update)
                     .then((res) => { console.log(res.result.nModified + " documents inserted/updated"); })
                     .catch(e => {

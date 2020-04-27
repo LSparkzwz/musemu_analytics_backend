@@ -9,6 +9,13 @@ body {
   flex-basis: 0;
 }
 
+.flexContainerColumnVisitor{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0.5;
+  flex-basis: 0;
+}
+
 .flexContainerRow{
   display: flex;
   flex-grow: 1;
@@ -17,6 +24,7 @@ body {
 
 .flexGrow{
   flex-grow: 1;
+  flex-basis: 0;
 }
 
 .dataVisualization{
@@ -29,7 +37,7 @@ body {
 }
 
 #menu{
-
+  display: flex;
   flex-basis: 0;
 }
 
@@ -55,4 +63,31 @@ body {
   margin: 5px;
   box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
   width: 190px;
+}
+
+.button{
+  background: transparent;
+  color:  #c4c4c4;
+  padding: 4px;
+}
+
+.button-l{
+  border-top: 2px solid #c4c4c4;
+  border-bottom: 2px solid #c4c4c4;
+  border-left: 2px solid #c4c4c4;
+  border-right:  1px solid #c4c4c4;
+  border-radius: 2px 0px 0px 2px;
+}
+
+.button-r{
+  border-top: 2px solid #c4c4c4;
+  border-bottom: 2px solid #c4c4c4;
+  border-right: 2px solid #c4c4c4;
+  border-left: 1px solid #c4c4c4;
+  border-radius: 0px 2px 2px 0px;
+}
+
+.buttonContainer{
+  display:flex;
+  justify-content:center;
 }

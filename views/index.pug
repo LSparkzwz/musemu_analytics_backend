@@ -10,10 +10,18 @@ block content
     padding: '0.1px'
   })
     div(id='menu')
-      input(id='dateSelect' type="date" onkeydown="return false")
+      div(class='flexGrow')
+        input(id='dateSelect' class='flexGrow' type="date" onkeydown="return false")
+      |
+      div( class='flexGrow' style={margin: 'auto'})
+        div(class='buttonContainer')
+          button(class='button button-l') Museum data
+          |
+          button(class='button button-r') Visitor data
+      |
+      div(class='flexGrow')
     |
-    div(id='stats' class='flexContainerColumn')
-
+    div(id='stats' class='flexContainerColumn' style={display: 'none'})
       div(class='flexContainerRow' style={})
         div(class='dataVisualization' )
           canvas(id='visitorsPerHour' class='dataCanvas')
@@ -28,7 +36,16 @@ block content
         div(class='dataVisualization' style={})
           canvas(id='POIholdingPower' class='dataCanvas')
     |
-    div(id='visitorData' class='flexContainerRow' style={display: 'none'})
+    div(id='visitorData' class='flexContainerRow' )
+      div(class='flexContainerRow' style={})
+        div(class='dataVisualization' )
+        |
+        div(class='dataVisualization' style={})
+      |
+      div(class='flexContainerColumnVisitor' style={})
+        div(class='dataVisualization' style={})
+        |
+        div(class='dataVisualization' style={})
 
 
 

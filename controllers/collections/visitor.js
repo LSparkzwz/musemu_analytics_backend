@@ -29,9 +29,11 @@ module.exports = {
 
     updateVisitors: async function (files){
          let newData = await getLogData(files);
-         let query = { visitor_ID: { $in: newData.visitors.map(visitor => visitor.visitor_ID) } };
+         let queryValue = newData.visitors.map(visitor => visitor.visitor_ID);
+         console.log(queryValue)
+         let query = 'visitor_ID';
          await dbAPI.updateElseInsertDocument(query,  newData.visitors , collection);
-         //await stats.updateVisitorStats(newData, date);
+         await stats.updateVisitorStats(newData, date);
     }
 };
 
