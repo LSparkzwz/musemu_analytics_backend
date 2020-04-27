@@ -76,8 +76,6 @@ router.get('/group/day_of_visit/:day', function(req, res, next) {
 router.get('/upload/visitor', function(req, res, next) {
     res.format({
         'application/json': async function () {
-
-
             res.json(res);
         }
     })

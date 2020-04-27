@@ -15,13 +15,19 @@ block content
       |
       div( class='flexGrow' style={margin: 'auto'})
         div(class='buttonContainer')
-          button(class='button button-l') Museum data
+          button(id='museumDataButton' class='button button-l') Museum data
           |
-          button(class='button button-r') Visitor data
+          button(id='visitorDataButton' class='button button-r') Visitor data
       |
-      div(class='flexGrow')
+      div(id="idSelContainer" class='flexGrow' style={visibility:'hidden'})
+        input(id='idSelect' class='flexGrow' type="number")
+        |
+        button(id='getVisitorButton' class='button button-l idB') Get Visitor
+        |
+        button(id='getGroupButton' class='button button-r idB') Get Group
+
     |
-    div(id='stats' class='flexContainerColumn' style={display: 'none'})
+    div(id='stats' class='flexContainerColumn')
       div(class='flexContainerRow' style={})
         div(class='dataVisualization' )
           canvas(id='visitorsPerHour' class='dataCanvas')
@@ -36,16 +42,37 @@ block content
         div(class='dataVisualization' style={})
           canvas(id='POIholdingPower' class='dataCanvas')
     |
-    div(id='visitorData' class='flexContainerRow' )
+    div(id='visitorData' class='flexContainerRow' style={display: 'none'})
       div(class='flexContainerRow' style={})
-        div(class='dataVisualization' )
+        div(class='dataVisualization flexContainerColumnVisitor' style={})
+          div(id='presentationTitle' class='whiteFont textAlignCenter' style={width: '100%', margin: '4px'}) Presentations watched:
+          |
+          div(style={height: '0px', width: '100%', background: 'white', padding: '1px'})
+          |
+          ul(id='presentationSummary' class='visitorDataContainer')
         |
-        div(class='dataVisualization' style={})
+        div(class='dataVisualization flexContainerColumnVisitor' style={})
+          div(id='visitTitle' class='whiteFont textAlignCenter' style={width: '100%', margin: '4px'}) Visit summary:
+          |
+          div(style={height: '0px', width: '100%', background: 'white', padding: '1px'})
+          |
+          ul(id='visitSummary' class='visitorDataContainer')
       |
       div(class='flexContainerColumnVisitor' style={})
-        div(class='dataVisualization' style={})
+        div(id='groupContainer' class='dataVisualization flexContainerColumnVisitor' style={})
+          div(id='groupTitle' class='whiteFont textAlignCenter' style={width: '100%', margin: '4px'}) Group ID:
+          |
+          div(style={height: '0px', width: '100%', background:'white', padding:'1px'})
+          |
+          div(class='whiteFont textAlignCenter' style={width: '100%', margin: '4px'}) Group members:
+          |
+          ul(id='groupMembers' class='visitorDataContainer')
         |
-        div(class='dataVisualization' style={})
+        div(id='OtherInfo' class='dataVisualization visitorDataContainer whiteFont flexContainerColumnVisitor' style={})
+          div(id='oInfoTitle' class='whiteFont textAlignCenter' style={width: '100%', margin: '4px'}) General museum information:
+          |
+          ul(id='oInfo' class='visitorDataContainer')
+
 
 
 

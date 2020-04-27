@@ -29,8 +29,6 @@ module.exports = {
 
     updateVisitors: async function (files){
          let newData = await getLogData(files);
-         let queryValue = newData.visitors.map(visitor => visitor.visitor_ID);
-         console.log(queryValue)
          let query = 'visitor_ID';
          await dbAPI.updateElseInsertDocument(query,  newData.visitors , collection);
          await stats.updateVisitorStats(newData, date);
@@ -91,7 +89,9 @@ function elaborateLogData(logs){
         let firstTimeEntry = false; //while parsing have we found the first time entry (ex '11:23:14') ?
         let visitStart = '00:00:00';
         let visitEnd = '00:00:00';
-        let alreadyVisitedPosition = [];
+        let alreadyVisitedPOI = [];
+        let alreadyVisitedRoomAtHour = [];
+        let alreadyVisitedAtHour = [];
 
         for (const entry of log) {
             if (entry[0] === 'Positions ') {
@@ -118,7 +118,7 @@ function elaborateLogData(logs){
                 if(utils.isFirstTimestampGreaterThanSecond(end,visitEnd)){
                     visitEnd = end;
                 }
-                adjustPositionData(start,end,position,visitor.position_log,newData,alreadyVisitedPosition);
+                adjustPositionData(start,end,position,visitor.position_log,newData,alreadyVisitedPOI, alreadyVisitedRoomAtHour, alreadyVisitedAtHour);
 
             } else if (parsingPresentations && entry[0] !== 'presentations ')
             {
@@ -126,7 +126,7 @@ function elaborateLogData(logs){
                 if(utils.isFirstTimestampGreaterThanSecond(entry[1],visitEnd)){
                     visitEnd = entry[1];
                 }
-                visitor.presentations_log.push({start: entry[0], end: entry[1], about: entry[2], ended_by: entry[3]});
+                visitor.presentations_log.push({start: entry[0], end: entry[1], about: entry[2], id: entry[3], ended_by: entry[4]});
 
             } else if (parsingEvents && entry[0] !== 'events  '){
                 if(utils.isFirstTimestampGreaterThanSecond(entry[1],visitEnd)){
@@ -141,17 +141,33 @@ function elaborateLogData(logs){
     return newData;
 }
 
-function adjustPositionData(start, end, position, positionLog, newData, alreadyVisitedPosition){
+function adjustPositionData(start, end, position, positionLog, newData, alreadyVisitedPOI, alreadyVisitedPositionAtHour, alreadyVisitedAtHour){
     positionLog.push({start: start, end:end, location: position}); //start, end, position
     let positionStart = parseInt(start.substring(0, 2));
-    let positionEnd = parseInt(start.substring(0, 2));
-    for (let i = positionStart; i <= positionEnd; i++) {
-        newData.visitorsPerHour[i]++;
-        newData.visitorsPerRoomPerHour[floorStructure.getRoom(position)][i]++;
+    let positionEnd = parseInt(end.substring(0, 2));
+
+    let hour = start.slice(0, 2);
+    let room = floorStructure.getRoom(position);
+    if(alreadyVisitedPositionAtHour[hour] === undefined || !alreadyVisitedPositionAtHour[hour].includes(room)) {
+        for (let i = positionStart; i <= positionEnd; i++) {
+            newData.visitorsPerRoomPerHour[room][i]++;
+        }
+        if (alreadyVisitedPositionAtHour[hour] === undefined) {
+            alreadyVisitedPositionAtHour[hour] = [room];
+        } else {
+            alreadyVisitedPositionAtHour[hour].push(room);
+        }
+    }
+    if(!alreadyVisitedAtHour.includes(hour)) {
+        for (let i = positionStart; i <= positionEnd; i++) {
+            alreadyVisitedAtHour.push(hour);
+            newData.visitorsPerHour[i]++;
+            hour++;
+        }
     }
 
-    if(!alreadyVisitedPosition.includes(position)) { //avoid putting the same visitor twice if they come back
-        alreadyVisitedPosition.push(position);
+    if(!alreadyVisitedPOI.includes(position)) { //avoid putting the same visitor twice if they come back
+        alreadyVisitedPOI.push(position);
         if (newData.visitorsPerPOI.has(position)) {
             newData.visitorsPerPOI.set(position, newData.visitorsPerPOI.get(position) + 1);
         } else {
@@ -159,6 +175,7 @@ function adjustPositionData(start, end, position, positionLog, newData, alreadyV
         }
     }
     let timeSpent = utils.getTimeSpent(start,end);
+
     if(newData.cumulativeTimePerPOI.has(position)){
         newData.cumulativeTimePerPOI.set(position, newData.cumulativeTimePerPOI.get(position)+timeSpent);
     }else{
