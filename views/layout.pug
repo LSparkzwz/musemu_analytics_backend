@@ -1,7 +1,8 @@
 doctype html
-html
+html(style={ height: '100%'})
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+    block scripts
+  body(style={ Height: '100%', margin: '0px', padding: '0px'})
     block content

@@ -54,7 +54,7 @@ module.exports = {
             else{
                 dbo.collection(collection).updateMany(query, newValues, { upsert: true },function(err, res) {
                     if (err) throw err;
-                    console.log(res.result.nModified + " documents inserted/updated");
+                    console.log(res.result.n + " documents inserted/updated");
                     db.close();
                 });
 

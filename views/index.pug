@@ -1,5 +1,37 @@
 extends layout
+block scripts
+  script(type="module" src='./indexBundle.js')
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div(id='container' class='flexContainerColumn' style={
+    height: '100%',
+    width: '100%',
+    background: '#111a24',
+    padding: '0.1px'
+  })
+    div(id='menu')
+      input(id='dateSelect' type="date" onkeydown="return false")
+    |
+    div(id='stats' class='flexContainerColumn')
+
+      div(class='flexContainerRow' style={})
+        div(class='dataVisualization' )
+          canvas(id='visitorsPerHour' class='dataCanvas')
+        |
+        div(class='dataVisualization' style={})
+          canvas(id='visitorsPerRoomPerHour' class='dataCanvas')
+      |
+      div(class='flexContainerColumn' style={})
+        div(class='dataVisualization' style={})
+          canvas(id='POIattractionPower' class='dataCanvas')
+        |
+        div(class='dataVisualization' style={})
+          canvas(id='POIholdingPower' class='dataCanvas')
+    |
+    div(id='visitorData' class='flexContainerRow' style={display: 'none'})
+
+
+
+
+
+

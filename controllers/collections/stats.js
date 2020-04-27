@@ -3,19 +3,19 @@ let dailyStats = require('./daily_stats');
 let utils = require('../utils');
 
 module.exports = {
-    updateVisitorStats: async function (newStats){
+    updateVisitorStats: async function (newStats, date){
         //update total stats
         await totalStats.getTotalStats().then((oldStats) => {
-            updatedStats = setUpdatedVisitorStats(oldStats,newStats);
+            let updatedStats = setUpdatedVisitorStats(oldStats,newStats);
             totalStats.updateTotalStats(updatedStats);
         });
         //update daily stats
-        let day = new Date('2020-04-19');
-        await dailyStats.getDailyStats(day).then((oldStats) => {
-            updatedStats = setUpdatedVisitorStats(oldStats,newStats);
+
+        await dailyStats.getDailyStats(date).then((oldStats) => {
+            let updatedStats = setUpdatedVisitorStats(oldStats,newStats);
             updatedStats.visitors_per_hour = newStats.visitorsPerHour;
             updatedStats.visitors_per_room_per_hour = newStats.visitorsPerRoomPerHour;
-            dailyStats.updateDailyStats(updatedStats,day);
+            dailyStats.updateDailyStats(updatedStats,date);
         });
     },
 //given a list of groups, update number_of_groups and average_group_size in the database
@@ -43,10 +43,9 @@ module.exports = {
                 let newAverageGroupSize = (sumOfGroupsSizes + ( stats.average_group_size * stats.number_of_groups ))
                     /( newNumberOfGroups );
 
-                dailyStats.updateDailyStats({
-                    average_group_size: newAverageGroupSize,
-                    number_of_groups: newNumberOfGroups
-                }, date);
+                stats.number_of_groups = newNumberOfGroups;
+                stats.average_group_size = newAverageGroupSize;
+                dailyStats.updateDailyStats(stats, date);
             });
         }
 };

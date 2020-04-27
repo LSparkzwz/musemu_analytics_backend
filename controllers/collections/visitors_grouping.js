@@ -4,12 +4,13 @@ let utils = require('../utils');
 let fileParser = require('../file_parser');
 let stats = require('./stats');
 let collection = "visitors_grouping";
+let date = new Date('2020-04-29');
 
 
 module.exports = {
-    insertGrouping: function () {
-        let file = fs.createReadStream('resources/visitors_grouping.csv');
-        fileParser.parse(file, file.path, {
+    insertGrouping: function (file, filename) {
+        //let file = fs.createReadStream('resources/visitors_grouping.csv');
+        fileParser.parse(file, filename, {
             header: true,
             transformHeader: function (h) {
                 return h.trim();
@@ -18,7 +19,7 @@ module.exports = {
                 let grouping = adjustGroupData(results);
                 let query = "group_ID";
                 await dbAPI.updateElseInsertDocument(query,  grouping, collection);
-                await stats.updateGroupStats(grouping, new Date('2020-04-19'));
+                await stats.updateGroupStats(grouping, date);
             })
             .catch(err => { console.log(err) });
         },
@@ -61,7 +62,7 @@ function adjustGroupData(visitors_grouping){
 
     //And we finally obtain the data structure we need for mongoDB
     return Object.keys(group_to_values).map(function (key) {
-        return {group_ID: key, visitors_ID: group_to_values[key], day : new Date('2020-04-19')};
+        return {group_ID: key, visitors_ID: group_to_values[key], day : new Date('2020-04-29')};
     });
 }
 

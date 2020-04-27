@@ -1,10 +1,58 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.flexContainerColumn{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1.5;
+  flex-basis: 0;
 }
 
+.flexContainerRow{
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+}
 
+.flexGrow{
+  flex-grow: 1;
+}
+
+.dataVisualization{
+  margin: 5px;
+  border: 2px solid #F1ECEB;
+  border-radius: 4px;
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+#menu{
+
+  flex-basis: 0;
+}
+
+.dataCanvas{
+  margin: auto;
+}
+
+[type="date"] {
+  background:#fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png)  97% 50% no-repeat ;
+}
+[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+#dateSelect {
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 1px 2px;
+  margin: 5px;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.1);
+  width: 190px;
+}

@@ -6,16 +6,18 @@ let floorStructure = require('./floor_structure');
 let fileParser = require('../file_parser');
 let stats = require('./stats');
 let collection = "visitors";
+let date = new Date('2020-04-19');
+let Visitor = require('../../models/visitor');
 
 
 module.exports = {
-    initializeVisitors: function () {
+   /* initializeVisitors: function () {
         fs.readdir('./resources/visitors_log',  async(err, filenames) => {
             let newData = await initializeVisitors(filenames);
             await dbAPI.insertDocument(newData.visitors, collection);
             await stats.updateVisitorStats(newData);
         });
-    },
+    },*/
 
     getVisitor: function(query) {
         return new Promise(async function (resolve, reject) {
@@ -25,23 +27,25 @@ module.exports = {
         });
     },
 
-    updateVisitors: async function (files, newValue){
-         let fileData = await getLogData(files);
-         let query = { visitor_ID: { $in: fileData.visitors.map(visitor => visitor.visitor_ID) } };
-         await dbAPI.updateElseInsertDocument(query, { $set: fileData.visitors }, collection);
-         return fileData;
+    updateVisitors: async function (files){
+         let newData = await getLogData(files);
+         let query = { visitor_ID: { $in: newData.visitors.map(visitor => visitor.visitor_ID) } };
+         await dbAPI.updateElseInsertDocument(query,  newData.visitors , collection);
+         //await stats.updateVisitorStats(newData, date);
     }
 };
 
 async function getLogData(files){
     let logs = [];
     for (const file of files) {
-        fileParser.parse(file, file.name, {skipEmptyLines : true})
-            .then(file => { logs.push([file.name].concat(file)); })
+        await fileParser.parse(file, file.originalname, {skipEmptyLines : true})
+            .then(result=> { logs.push([file.originalname].concat(result)); })
             .catch(err => { console.log(err) });
     }
     return elaborateLogData(logs);
 }
+
+
 
 
 /*
@@ -72,13 +76,12 @@ function elaborateLogData(logs){
     };
 
     for (const log of logs) {
-        let visitor = new Visitor();
-
+        let visitor = new Visitor;
         let filename = log[0].match( /\d+/g ); //filename has visitor and group ID
         visitor.visitor_ID = filename[0];
         visitor.group_ID = filename[1];
         visitor.position_log = [];
-        visitor.day_of_visit = new Date('2020-04-19'); //we don't have this info in the given data, this is an assumption
+        visitor.day_of_visit = date; //we don't have this info in the given data, this is an assumption
 
         let parsingPositions = false;
         let parsingPresentations = false;
@@ -133,12 +136,11 @@ function elaborateLogData(logs){
         newData.cumulativeVisitorTimeInMuseum += utils.getTimeSpent(visitStart,visitEnd);
         newData.visitors.push(visitor);
     }
-
     return newData;
 }
 
 function adjustPositionData(start, end, position, positionLog, newData, alreadyVisitedPosition){
-    positionLog.push({start: start, end:end, location: end}); //start, end, position
+    positionLog.push({start: start, end:end, location: position}); //start, end, position
     let positionStart = parseInt(start.substring(0, 2));
     let positionEnd = parseInt(start.substring(0, 2));
     for (let i = positionStart; i <= positionEnd; i++) {
@@ -163,6 +165,7 @@ function adjustPositionData(start, end, position, positionLog, newData, alreadyV
     newData.totalPOITime += timeSpent;
 }
 
+/*
 async function initializeVisitors(filenames){
     let logs = [];
     for (const filename of filenames) {
@@ -176,4 +179,4 @@ async function initializeVisitors(filenames){
             .catch(err => { console.log(err) });
     }
     return elaborateLogData(logs);
-}
+}*/

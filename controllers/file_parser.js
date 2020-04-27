@@ -1,16 +1,18 @@
 const fs = require('fs');
 let Papa = require('papaparse');
+const streamifier = require('streamifier');
 
 module.exports = {
 
     //read https://www.papaparse.com/docs#config for info about config
     parse : (file, filename, config) => {
+        file = streamifier.createReadStream(file.buffer);
         return new Promise((resolve, reject) =>{
             config.complete = function (results) {
                 if (results.errors === undefined || (results.errors).length === 0) {
-                    return resolve(results.data);
+                    resolve(results.data);
                 }else {
-                    console.log(filename + " couldn't be parsed, please check if there's something wrong with it.");
+                    reject(filename + " couldn't be parsed, please check if there's something wrong with it.");
                 }},
 
             Papa.parse(file , config);

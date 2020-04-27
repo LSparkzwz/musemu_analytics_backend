@@ -13,10 +13,15 @@ Structure of visitor documents in the mongodb database:
     },
 ]*/
 
-function Visitor() {
-    this.visitor_ID = '';
-    this.group_ID = '';
-    this.day_of_visit = '';
-    this.position_log = [];
-    this.presentations_log = [];
+
+class Visitor {
+    constructor() {
+        this.visitor_ID = '';
+        this.group_ID = '';
+        this.day_of_visit = '';
+        this.position_log = [];
+        this.presentations_log = [];
+    }
 }
+
+module.exports = Visitor;

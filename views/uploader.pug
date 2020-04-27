@@ -1,5 +1,18 @@
 extends layout
+block scripts
+    script(src='./javascripts/uploader.js')
 
 block content
-    h1= title
-    p Welcome to #{title}
+    p Upload groupings (a single csv file with the grouping data)
+    form(action='/uploader/addGrouping', method='POST' enctype='multipart/form-data')
+        input(type='file',  name="Grouping" accept=".csv")
+        input(type='submit', value='SubmitGrouping')
+
+    p Upload visitors (one or more csv file with the visitor data)
+    form(action='/uploader/addVisitors', method='POST' enctype='multipart/form-data')
+        input(type='file', name="Visitors" accept=".csv" multiple)
+        input(type='submit', value='SubmitVisitors')
+
+
+
+

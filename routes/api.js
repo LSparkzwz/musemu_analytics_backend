@@ -1,10 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var totalStats = require('../controllers/collections/total_stats');
-var dailyStats = require('../controllers/collections/daily_stats');
-var visitors = require('../controllers/collections/visitor');
-var visitorGrouping = require('../controllers/collections/visitors_grouping');
-var dbAPI = require('../controllers/collections/database_API');
+let express = require('express');
+let router = express.Router();
+let totalStats = require('../controllers/collections/total_stats');
+let dailyStats = require('../controllers/collections/daily_stats');
+let visitors = require('../controllers/collections/visitor');
+let visitorGrouping = require('../controllers/collections/visitors_grouping');
 
 router.get('/total_stats', function(req, res, next) {
     res.format({

@@ -6,6 +6,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
 var uploaderRouter = require('./routes/uploader');
+/*var dataVisualizationRouter = require('./routes/dataVisualization')*/
 
 var app = express();
 
@@ -19,8 +20,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/uploader', uploaderRouter);
+/*app.use('/dataVisualization', dataVisualizationRouter);*/
 
 module.exports = app;
