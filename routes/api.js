@@ -23,6 +23,16 @@ router.get('/daily_stats/:day', function(req, res, next) {
     })
 });
 
+router.get('/visitors/all_ids', function(req, res, next) {
+    res.format({
+        'application/json': async function () {
+            let query = { }
+            let visitorIDs = await visitors.getVisitor(query);
+            res.json(visitorIDs.map(visitor => visitor.visitor_ID));
+        }
+    })
+});
+
 router.get('/visitors/id/:id', function(req, res, next) {
     res.format({
         'application/json': async function () {
