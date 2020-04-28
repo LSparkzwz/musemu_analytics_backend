@@ -33,6 +33,16 @@ router.get('/visitors/all_ids', function(req, res, next) {
     })
 });
 
+router.get('/visitors/group_ids', function(req, res, next) {
+    res.format({
+        'application/json': async function () {
+            let query = { }
+            let visitorIDs = await visitors.getVisitor(query);
+            res.json([...new Set(visitorIDs.map(visitor => visitor.group_ID))]);
+        }
+    })
+});
+
 router.get('/visitors/id/:id', function(req, res, next) {
     res.format({
         'application/json': async function () {
@@ -59,6 +69,16 @@ router.get('/visitors/group/:id', function(req, res, next) {
             let query = { group_ID : req.params.id }
             let visitor = await visitors.getVisitor(query);
             res.json(visitor);
+        }
+    })
+});
+
+router.get('/group/all_ids', function(req, res, next) {
+    res.format({
+        'application/json': async function () {
+            let query = { }
+            let groups = await visitorGrouping.getGroup(query);
+            res.json(groups.map(group => group.group_ID));
         }
     })
 });
