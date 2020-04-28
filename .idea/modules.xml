@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/musemu_analytics_backend.iml" filepath="$PROJECT_DIR$/.idea/musemu_analytics_backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../musemu_analytics/.idea/musemu_analytics.iml" filepath="$PROJECT_DIR$/../musemu_analytics/.idea/musemu_analytics.iml" />
     </modules>
   </component>
 </project>
