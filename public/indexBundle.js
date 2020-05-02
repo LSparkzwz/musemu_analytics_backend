@@ -20756,7 +20756,7 @@ return src;
 })));
 
 },{}],3:[function(require,module,exports){
-let apiUrl = 'http://localhost:3000/api/';
+let apiUrl = 'https://museum-analytics.herokuapp.com/api/';
 
 let Chart = require('chart.js');
 let barBorderColor = '#F1ECEB';

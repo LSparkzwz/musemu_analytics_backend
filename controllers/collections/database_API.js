@@ -1,6 +1,10 @@
 let mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
-var url = "mongodb://localhost:27017/";
+//var url = "mongodb://localhost:27017/";
+var username = "Danilo"
+var pass = "nhut9kXXE2vuS9j5"
+
+var url = "mongodb+srv://Danilo:nhut9kXXE2vuS9j5@cluster0-b3kzx.mongodb.net/test?retryWrites=true&w=majority"
 
 
 module.exports = {
