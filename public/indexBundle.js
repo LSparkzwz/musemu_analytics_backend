@@ -20756,7 +20756,8 @@ return src;
 })));
 
 },{}],3:[function(require,module,exports){
-let apiUrl = 'https://museum-analytics.herokuapp.com/api/';
+//let apiUrl = 'https://museum-analytics.herokuapp.com/api/';
+let apiUrl = 'http://localhost:3000/api/';
 
 let Chart = require('chart.js');
 let barBorderColor = '#F1ECEB';
@@ -20941,7 +20942,7 @@ function getVisitorStats(id){
 
             for(let entry in presentationSummary){
                 let li = document.createElement("li");
-                li.innerHTML = entry + ": " + presentationSummary[entry].about + ", ended by: ";
+                li.innerHTML = "About: " + presentationSummary[entry].about + ", ended by: ";
                 li.classList.add("whiteFont");
                 li.classList.add("statInfo");
                 let div = document.createElement("div");
